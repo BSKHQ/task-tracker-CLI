@@ -17,4 +17,46 @@ public class Task {
     private int id;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public Task(String description, int id){
+        this.description = description;
+        this.id = id;
+        this.status = Status.NOTDONE;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = this.createdAt;
+    }
+
+/*********************SETTERS************************************* */
+    public void update(String newDescription){
+        this.description = newDescription;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void setStatus(Status newStatus){
+        this.status = newStatus;
+        
+    }
+
+/*********************GETTERS************************************* */
+    public Status getStatus(){
+        return this.status;
+    }
+
+    public String description(){
+        return this.description;
+    }
+
+    public LocalDateTime getTimeCreatedAt(){
+        return this.createdAt;
+    }
+
+    public LocalDateTime getLastUpdatedTime(){
+        return this.updatedAt;
+    }
+
+    public String toString(){
+        return this.id + " " + this.description + " " + this.status + getTimeCreatedAt() + "  " + getLastUpdatedTime();
+    }
+
+
 }
