@@ -38,6 +38,10 @@ public class Task {
     }
 
 /*********************GETTERS************************************* */
+
+    public int getId(){
+        return this.id;
+    }
     public Status getStatus(){
         return this.status;
     }
