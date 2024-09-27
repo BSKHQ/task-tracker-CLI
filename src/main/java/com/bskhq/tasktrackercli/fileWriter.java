@@ -38,25 +38,32 @@ public class fileWriter {
                 writer.write("[]");
             }
 
-            RandomAccessFile file = new RandomAccessFile("taskStore.json", "rw");
-            
-            file.seek(file.length()-1);
-            String toBeWritten = "\n" + "{" + "\"id\":" + "\"" + task.getId() + "\"," +
-                                    "\"description\":" + "\"" + task.description() + "\"," +
-                                    "\"status\":" + "\"" + task.getStatus().toString() + "\"," +
-                                    "\"createdAt\":" + "\"" + task.getTimeCreatedAt().toString() + "\","+
-                                    "\"updatedAt\":" + "\"" + task.getLastUpdatedTime().toString() + "\"" + "}";
-
-            writer.newLine();
-            writer.write("{");
-            writer.write("\"id\":" + "\"" + task.getId() + "\",");
-            writer.write("\"description\":" + "\"" + task.description() + "\",");
-            writer.write("\"status\":" + "\"" + task.getStatus().toString() + "\",");
-            writer.write("\"createdAt\":" + "\"" + task.getTimeCreatedAt().toString() + "\",");
-            writer.write("\"updatedAt\":" + "\"" + task.getLastUpdatedTime().toString() + "\"");
-            writer.write("}");
-
         } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        try (RandomAccessFile file = new RandomAccessFile("taskStore.json", "rw")) {
+
+            if (file.length() >= 3) {
+                file.seek(file.length() - 3);
+            }
+
+            if (file.readByte() == '}') {
+                file.write(",".getBytes(StandardCharsets.UTF_8));
+            }
+
+            file.write("\n".getBytes(StandardCharsets.UTF_8));
+
+            String toBeWritten = "{" + "\"id\":" + "\"" + task.getId() + "\","
+                    + "\"description\":" + "\"" + task.description() + "\","
+                    + "\"status\":" + "\"" + task.getStatus().toString() + "\","
+                    + "\"createdAt\":" + "\"" + task.getTimeCreatedAt().toString() + "\","
+                    + "\"updatedAt\":" + "\"" + task.getLastUpdatedTime().toString() + "\"" + "}";
+
+            file.write(toBeWritten.getBytes(StandardCharsets.UTF_8));
+            file.write("\n".getBytes(StandardCharsets.UTF_8));
+            file.write("]".getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
