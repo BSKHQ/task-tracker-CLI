@@ -19,11 +19,19 @@ public class Task {
     private LocalDateTime updatedAt;
 
     public Task(String description, int id){
-        this.description = description;
         this.id = id;
+        this.description = description;
         this.status = Status.NOTDONE;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = this.createdAt;
+    }
+
+    public Task(String description, int id, Status status, LocalDateTime createdTime, LocalDateTime updatedTime){
+        this.id = id;
+        this.description = description;
+        this.status = status;
+        this.createdAt = createdTime;
+        this.updatedAt = updatedTime;
     }
 
 /*********************SETTERS************************************* */
