@@ -24,6 +24,7 @@ import com.bskhq.tasktrackercli.fileWriter;
  * @author kunle
  */
 public class fileWriterTest {
+    private final static  String FILE_NAME = "taskStore.json";
 
     public fileWriterTest() {
     }
@@ -31,7 +32,7 @@ public class fileWriterTest {
     @BeforeEach
     void deleteFile() {
         try {
-            Files.deleteIfExists(Path.of("taskStore.json"));
+            Files.deleteIfExists(Path.of(FILE_NAME));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -50,7 +51,7 @@ public class fileWriterTest {
         String taskDescription = "";
 
         for (int i = 0; i < testDescription.length; i++) {
-            try (Scanner reader = new Scanner(Path.of("taskStore.json"))) {
+            try (Scanner reader = new Scanner(Path.of(FILE_NAME))) {
                 String line = reader.nextLine();
                 if (line.length() < 2) {
                     continue;

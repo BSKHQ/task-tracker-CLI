@@ -26,14 +26,16 @@ public final class fileWriter {
  /*Since Java doesn't have any internal libraries for handling JSON and we aren't allowed to 
      * import any external libraries, we'll just have to implement one :)
      */
+    private final static  String FILE_NAME = "taskStore.json";
+    
     private fileWriter() {
     }
 
     public static void writeToFile(Task task) {
         //Writes given task to file
-        try (BufferedWriter writer = Files.newBufferedWriter(Path.of("taskStore.json"), StandardCharsets.UTF_8, StandardOpenOption.CREATE)) {
+        try (BufferedWriter writer = Files.newBufferedWriter(Path.of(FILE_NAME), StandardCharsets.UTF_8, StandardOpenOption.CREATE)) {
 
-            if (Files.size(Path.of("taskStore.json")) == 0) {
+            if (Files.size(Path.of(FILE_NAME)) == 0) {
                 writer.write("[]");
             }
 
@@ -41,7 +43,7 @@ public final class fileWriter {
             System.out.println(e.getMessage());
         }
 
-        try (RandomAccessFile file = new RandomAccessFile("taskStore.json", "rw")) {
+        try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "rw")) {
 
             if (file.length() >= 3) {
                 file.seek(file.length() - 3);
@@ -70,7 +72,7 @@ public final class fileWriter {
     public static Map<Integer, Task> JSONtoHashmap() {
         Map<Integer, Task> jsonMap = new HashMap<>();
 
-        try (BufferedReader reader = Files.newBufferedReader(Path.of("taskStore.json"))) {
+        try (BufferedReader reader = Files.newBufferedReader(Path.of(FILE_NAME))) {
             reader.lines().forEach(line -> {
 
                 if (line.length() > 2) { //make sure we're not dealing with lines containing [ or ]
@@ -128,7 +130,7 @@ public final class fileWriter {
     }
 
     public static void HashMapToJson(Map<Integer, Task> hashmap) {
-        try (BufferedWriter writer = Files.newBufferedWriter(Path.of("taskStore.json"), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
+        try (BufferedWriter writer = Files.newBufferedWriter(Path.of(FILE_NAME), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
             for (Task t : hashmap.values()) {
                 writeToFile(t);
             }
