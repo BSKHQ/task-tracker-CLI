@@ -45,6 +45,10 @@ public class Task {
         
     }
 
+    public void changeID(int newId){
+        this.id = newId;
+    }
+
 /*********************GETTERS************************************* */
 
     public int getId(){
