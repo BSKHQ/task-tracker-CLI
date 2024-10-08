@@ -2,23 +2,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package com.bskhq.tasktrackercli;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
  * @author kunle
  */
 public class Task {
+
     private Status status;
     private String description;
     private int id;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Task(String description, int id){
+    public Task(String description, int id) {
         this.id = id;
         this.description = description;
         this.status = Status.NOTDONE;
@@ -26,7 +27,7 @@ public class Task {
         this.updatedAt = this.createdAt;
     }
 
-    public Task(String description, int id, Status status, LocalDateTime createdTime, LocalDateTime updatedTime){
+    public Task(String description, int id, Status status, LocalDateTime createdTime, LocalDateTime updatedTime) {
         this.id = id;
         this.description = description;
         this.status = status;
@@ -34,45 +35,56 @@ public class Task {
         this.updatedAt = updatedTime;
     }
 
-/*********************SETTERS************************************* */
-    public void update(String newDescription){
+    /**
+     * *******************SETTERS*************************************
+     */
+    public void update(String newDescription) {
         this.description = newDescription;
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void setStatus(Status newStatus){
+    public void setStatus(Status newStatus) {
         this.status = newStatus;
-        
+
     }
 
-    public void changeID(int newId){
+    public void changeID(int newId) {
         this.id = newId;
     }
 
-/*********************GETTERS************************************* */
-
-    public int getId(){
+    /**
+     * *******************GETTERS*************************************
+     */
+    public int getId() {
         return this.id;
     }
-    public Status getStatus(){
+
+    public Status getStatus() {
         return this.status;
     }
 
-    public String description(){
+    public String description() {
         return this.description;
     }
 
-    public LocalDateTime getTimeCreatedAt(){
+    public LocalDateTime getTimeCreatedAt() {
         return this.createdAt;
     }
 
-    public LocalDateTime getLastUpdatedTime(){
+    public LocalDateTime getLastUpdatedTime() {
         return this.updatedAt;
     }
 
-    public String toString(){
-        return this.id + " " + this.description + " " + this.status + getTimeCreatedAt() + "  " + getLastUpdatedTime();
-    }
+    @Override
+    public String toString() {
+        String timeCreated = getTimeCreatedAt().format(DateTimeFormatter.ISO_LOCAL_TIME);
+        String dateCreated = getTimeCreatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE);
 
+        String timeUpdated = getLastUpdatedTime().format(DateTimeFormatter.ISO_LOCAL_TIME);
+        String dateUpdated = getLastUpdatedTime().format(DateTimeFormatter.ISO_LOCAL_DATE);
+
+        //return this.id + " " + this.description + " " + this.status + " " + timeCreated + " @ " + dateCreated + " " + timeUpdated + " @ " + dateUpdated;
+        return this.id + " " + this.description;
+    }
 
 }
