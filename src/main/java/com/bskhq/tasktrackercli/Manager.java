@@ -4,54 +4,97 @@
  */
 package com.bskhq.tasktrackercli;
 
+import java.util.Map;
+
 /**
  *
  * @author kunle
  */
-
 public class Manager {
 
-    private final String fileName = "taskStore.json";
-
     /*manages Tasks */
-    public Manager() {
-        
+    private Manager() {
     }
 
-    public void addTask(Task task) {
-
+    public static void add(String task) {
+        int currentId = fileWriter.JSONtoHashmap().size();
+        addTask(new Task(task, currentId + 1));
     }
 
-    public void updateTask(int id, String newDescription) {
-
+    public static void addTask(Task task) {
+        fileWriter.writeToFile(task);
     }
 
-    public void deleteTask(int id) {
-
+    public static boolean checkValidId(int id) {
+        //check that id is valid
+        return !(id < 1 || id > fileWriter.JSONtoHashmap().size());
     }
 
-    public void listAllTasks() {
+    public static void updateTask(int id, String newDescription) {
+        Map<Integer, Task> editMap = fileWriter.JSONtoHashmap();
 
+        Task t = editMap.get(id);
+        t.update(newDescription);
+
+        fileWriter.HashMapToJson(editMap);
     }
 
-    public void listDoneTasks() {
-
+    public static void deleteTask(int id) {
+        Map<Integer, Task> editMap = fileWriter.JSONtoHashmap();
+        int size = editMap.size();
+        while (id < size) {
+            editMap.get(id + 1).changeID(id);
+            editMap.replace(id, editMap.get(id + 1));
+            id++;
+        }
+        if (id == size) {
+            editMap.remove(id);
+        }
+        fileWriter.HashMapToJson(editMap);
     }
 
-    public void listToDoTasks() {
-
+    public static void listAllTasks() {
+        Map<Integer, Task> editMap = fileWriter.JSONtoHashmap();
+        editMap.values().forEach(task -> System.out.println(task));
     }
 
-    public void listInProgressTasks() {
-
+    public static void listDoneTasks() {
+        Map<Integer, Task> editMap = fileWriter.JSONtoHashmap();
+        editMap.values().stream()
+                .filter(task -> task.getStatus() == Status.DONE)
+                .forEach(task -> System.out.println(task));
     }
 
-    public void markTaskAsInProgress() {
-
+    public static void listToDoTasks() {
+        Map<Integer, Task> editMap = fileWriter.JSONtoHashmap();
+        editMap.values().stream()
+                .filter(task -> task.getStatus() == Status.NOTDONE)
+                .forEach(task -> System.out.println(task));
     }
 
-    public void markTaskAsDone() {
+    public static void listInProgressTasks() {
+        Map<Integer, Task> editMap = fileWriter.JSONtoHashmap();
+        editMap.values().stream()
+                .filter(task -> task.getStatus() == Status.INPROGRESS)
+                .forEach(task -> System.out.println(task));
+    }
 
+    public static void markTaskAsInProgress(int id) {
+        Map<Integer, Task> editMap = fileWriter.JSONtoHashmap();
+
+        Task t = editMap.get(id);
+        t.setStatus(Status.INPROGRESS);
+
+        fileWriter.HashMapToJson(editMap);
+    }
+
+    public static void markTaskAsDone(int id) {
+        Map<Integer, Task> editMap = fileWriter.JSONtoHashmap();
+
+        Task t = editMap.get(id);
+        t.setStatus(Status.DONE);
+
+        fileWriter.HashMapToJson(editMap);
     }
 
 }
