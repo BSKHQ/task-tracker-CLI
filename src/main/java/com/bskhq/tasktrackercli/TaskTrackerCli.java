@@ -152,7 +152,7 @@ public class TaskTrackerCli {
         try {
             taskId = Integer.parseInt(COMMAND2); //make sure the task id is an integer
         } catch (NumberFormatException e) {
-            System.out.println("task id cannot be blank");
+            System.out.println("please give a valid task id");
             return false;
         }
         //finally, check that the taskid actually exists
