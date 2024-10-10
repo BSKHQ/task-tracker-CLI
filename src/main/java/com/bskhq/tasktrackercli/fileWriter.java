@@ -6,6 +6,7 @@ package com.bskhq.tasktrackercli;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
@@ -26,13 +27,24 @@ public final class fileWriter {
  /*Since Java doesn't have any internal libraries for handling JSON and we aren't allowed to 
      * import any external libraries, we'll just have to implement one :)
      */
-    private final static  String FILE_NAME = "taskStore.json";
+    
+    private final static String PATH = System.getProperty("user.home") + File.separator+ "tasktrackercli";
+    private final static String FILE_NAME = PATH + File.separator + "taskstore.json";
+
     
     private fileWriter() {
     }
 
+    private static void mkDirIfNotExists(){
+        File fileDir = new File(PATH);
+        if (!fileDir.exists()){
+            fileDir.mkdir();
+        }
+    }
+
     public static void writeToFile(Task task) {
         //Writes given task to file
+        mkDirIfNotExists();
         try (BufferedWriter writer = Files.newBufferedWriter(Path.of(FILE_NAME), StandardCharsets.UTF_8, StandardOpenOption.CREATE)) {
 
             if (Files.size(Path.of(FILE_NAME)) == 0) {
@@ -70,6 +82,7 @@ public final class fileWriter {
     }
 
     public static Map<Integer, Task> JSONtoHashmap() {
+        mkDirIfNotExists();
         Map<Integer, Task> jsonMap = new HashMap<>();
 
         try (BufferedReader reader = Files.newBufferedReader(Path.of(FILE_NAME))) {
@@ -130,6 +143,7 @@ public final class fileWriter {
     }
 
     public static void HashMapToJson(Map<Integer, Task> hashmap) {
+        mkDirIfNotExists();
         try (BufferedWriter writer = Files.newBufferedWriter(Path.of(FILE_NAME), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
             for (Task t : hashmap.values()) {
                 writeToFile(t);
