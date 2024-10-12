@@ -1,6 +1,5 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ *  This file is licensed under the MIT License - see the LICENSE file for details
  */
 package com.bskhq.tasktrackercli;
 

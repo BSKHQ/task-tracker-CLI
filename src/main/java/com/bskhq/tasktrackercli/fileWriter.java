@@ -1,6 +1,5 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ *  This file is licensed under the MIT License - see the LICENSE file for details
  */
 package com.bskhq.tasktrackercli;
 
@@ -23,29 +22,31 @@ import java.util.regex.Pattern;
 
 public final class fileWriter {
 
-    /*this class handles reading and writing from and to the JSON file */
- /*Since Java doesn't have any internal libraries for handling JSON and we aren't allowed to 
+    /* this class handles reading and writing from and to the JSON file */
+    /*
+     * Since Java doesn't have any internal libraries for handling JSON and we
+     * aren't allowed to
      * import any external libraries, we'll just have to implement one :)
      */
-    
-    private final static String PATH = System.getProperty("user.home") + File.separator+ "tasktrackercli";
+
+    private final static String PATH = System.getProperty("user.home") + File.separator + "tasktrackercli";
     private final static String FILE_NAME = PATH + File.separator + "taskstore.json";
 
-    
     private fileWriter() {
     }
 
-    private static void mkDirIfNotExists(){
+    private static void mkDirIfNotExists() {
         File fileDir = new File(PATH);
-        if (!fileDir.exists()){
+        if (!fileDir.exists()) {
             fileDir.mkdir();
         }
     }
 
     public static void writeToFile(Task task) {
-        //Writes given task to file
+        // Writes given task to file
         mkDirIfNotExists();
-        try (BufferedWriter writer = Files.newBufferedWriter(Path.of(FILE_NAME), StandardCharsets.UTF_8, StandardOpenOption.CREATE)) {
+        try (BufferedWriter writer = Files.newBufferedWriter(Path.of(FILE_NAME), StandardCharsets.UTF_8,
+                StandardOpenOption.CREATE)) {
 
             if (Files.size(Path.of(FILE_NAME)) == 0) {
                 writer.write("[]");
@@ -85,10 +86,19 @@ public final class fileWriter {
         mkDirIfNotExists();
         Map<Integer, Task> jsonMap = new HashMap<>();
 
+        File fl = new File(FILE_NAME);
+        if (!fl.exists()) {
+            try (BufferedWriter writer = Files.newBufferedWriter(Path.of(FILE_NAME), StandardCharsets.UTF_8,
+                    StandardOpenOption.CREATE)) {
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
         try (BufferedReader reader = Files.newBufferedReader(Path.of(FILE_NAME))) {
             reader.lines().forEach(line -> {
 
-                if (line.length() > 2) { //make sure we're not dealing with lines containing [ or ]
+                if (line.length() > 2) { // make sure we're not dealing with lines containing [ or ]
                     int taskId = 0;
                     String taskDescription = "";
                     Status taskStatus = null;
@@ -130,7 +140,7 @@ public final class fileWriter {
                     if (timeMatcher.find()) {
                         taskUpdatedAt = LocalDateTime.parse(timeMatcher.group(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
                     }
-                    //finally, remake the task :)
+                    // finally, remake the task :)
                     Task remadeTask = new Task(taskDescription, taskId, taskStatus, taskCreatedAt, taskUpdatedAt);
                     jsonMap.put(taskId, remadeTask);
 
@@ -144,7 +154,8 @@ public final class fileWriter {
 
     public static void HashMapToJson(Map<Integer, Task> hashmap) {
         mkDirIfNotExists();
-        try (BufferedWriter writer = Files.newBufferedWriter(Path.of(FILE_NAME), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
+        try (BufferedWriter writer = Files.newBufferedWriter(Path.of(FILE_NAME), StandardOpenOption.CREATE,
+                StandardOpenOption.TRUNCATE_EXISTING)) {
             for (Task t : hashmap.values()) {
                 writeToFile(t);
             }
