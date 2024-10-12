@@ -1,5 +1,5 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ *  This project is licensed under the MIT License - see the LICENSE file for details
  */
 package com.bskhq.tasktrackercli;
 
@@ -26,14 +26,14 @@ public class TaskTrackerCli {
             COMMAND2 = args[1].trim();
             COMMAND3 = args[2].trim();
         } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
-            //silent
+            // silent
         }
 
         switch (COMMAND) {
             case "add" ->
                 add(COMMAND2, args);
             case "update" ->
-                update(COMMAND2, COMMAND3);
+                update(COMMAND2, args);
             case "delete" ->
                 delete(COMMAND2);
             case "mark-in-progress", "mark-done" ->
@@ -43,7 +43,8 @@ public class TaskTrackerCli {
             case "help" ->
                 help();
             default -> {
-                System.out.println("You need to give a valid command. Try \'tasktrackercli help\' for list of available commands");
+                System.out.println(
+                        "You need to give a valid command. Try \'tasktrackercli help\' for list of available commands");
             }
         }
 
@@ -86,13 +87,21 @@ public class TaskTrackerCli {
         Manager.add(task.toString());
     }
 
-    private static void update(String COMMAND2, String COMMAND3) {
+    private static void update(String COMMAND2, String[] args) {
         if (taskIdValid(COMMAND2)) {
-            if (COMMAND3.isBlank()) { //make sure the description is not blank
+            if (args[2].isBlank()) { // make sure the description is not blank
                 System.out.println("INVALID TASK DESCRIPTION");
+                System.out.println("Try \'update <task id> <new task description>\'");
                 return;
             }
-            Manager.updateTask(Integer.parseInt(COMMAND2), COMMAND3);
+            StringBuilder newTaskDesc = new StringBuilder();
+            newTaskDesc.append(args[2]);
+            for (int i = 3; i < args.length; i++) {
+                newTaskDesc.append(" ");
+                newTaskDesc.append(args[i].trim());
+            }
+
+            Manager.updateTask(Integer.parseInt(COMMAND2), newTaskDesc.toString());
         }
     }
 
@@ -150,12 +159,12 @@ public class TaskTrackerCli {
 
         int taskId = 0;
         try {
-            taskId = Integer.parseInt(COMMAND2); //make sure the task id is an integer
+            taskId = Integer.parseInt(COMMAND2); // make sure the task id is an integer
         } catch (NumberFormatException e) {
             System.out.println("please give a valid task id");
             return false;
         }
-        //finally, check that the taskid actually exists
+        // finally, check that the taskid actually exists
         return Manager.checkValidId(taskId);
     }
 
