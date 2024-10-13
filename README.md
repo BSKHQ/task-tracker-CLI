@@ -15,8 +15,9 @@ Created as part of a learning project for the Java roadmap on [Roadmap.sh](https
   2. Install it as an administrator
   3. Do `ctrl+x` and select **Terminal** or **powershell**
   4. Do `[Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\Program files\task-cli", "User")` to add the app to the path
-  5. You can now do `task-cli` from anywhere to add, delete, or see your tasks.
-  6. Enjoy
+  5. Close the shell and open it again. 
+  6. You can now do `task-cli` from anywhere to add, delete, or see your tasks.
+  7. Enjoy
 
 
   # HOW TO USE
