@@ -1,5 +1,9 @@
 TaskTrackerCLI is a simple commandline tool for managing your daily tasks.\
-Created as part of a learning project for the Java roadmap on [Roadmap.sh](https://roadmap.sh/projects/task-tracker)
+**Made for engineers** \
+If you're an engineer who spends most of their time in the command line environment, this is the perfect tool for you. \
+No need to go back and forth between your phone and your pc. Simply add your tasks and manage them here easily.
+
+_Created as part of a learning project for the Java roadmap on [Roadmap.sh](https://roadmap.sh/projects/task-tracker)_
 
   # HOW TO INSTALL
   ## For Debian-based Linux users (like debian, ubuntu..)
